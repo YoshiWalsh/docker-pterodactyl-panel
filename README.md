@@ -24,5 +24,4 @@ By default this stack includes its own MariaDB server, but with a few modificati
 
 ## Roadmap
 
- - Switch to php:fpm-alpine for smaller containers
  - Add compatiblility with `docker stack` by using prebuilt images
