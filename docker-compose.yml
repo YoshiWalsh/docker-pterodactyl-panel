@@ -1,0 +1,37 @@
+version: "3.4"
+services:
+  database:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  cache:
+    image: redis
+  php:
+    build:
+      context: pterodactyl-panel-app
+      dockerfile: Dockerfile
+      target: app
+    depends_on:
+      - database
+    volumes:
+      - ./.env:/var/www/html/.env
+      - ./storage/:/var/www/html/storage/
+      - app:/var/www/html/
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - php
+    ports:
+      - 5080:80
+    volumes:
+      - app:/var/www/html/
+
+volumes:
+  app:
+  storage:
