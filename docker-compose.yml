@@ -8,6 +8,8 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - db:/var/lib/mysql
   cache:
     image: redis
   php:
@@ -19,7 +21,7 @@ services:
       - database
     volumes:
       - ./.env:/var/www/html/.env
-      - ./storage/:/var/www/html/storage/
+      - storage:/var/www/html/storage/
       - app:/var/www/html/
   nginx:
     build:
@@ -34,4 +36,5 @@ services:
 
 volumes:
   app:
+  db:
   storage:
