@@ -37,5 +37,3 @@ COPY cronfile /root/cronfile
 RUN crontab /root/cronfile
 EXPOSE 80
 ENTRYPOINT ["/bin/sh", "-c", "cp -r /root/initial_storage/* ./storage/ && /root/wait-for database:3306 -t 30 && yes no | php artisan key:generate && php artisan migrate --force && php artisan db:seed --force && php-fpm"]
-
-FROM nginx:mainline AS nginx
