@@ -22,7 +22,7 @@ services:
     volumes:
       - ./.env:/var/www/html/.env
       - storage:/var/www/html/storage/
-      - app:/var/www/html/
+      - public:/var/www/html/public/
   nginx:
     build:
       context: nginx
@@ -32,9 +32,9 @@ services:
     ports:
       - 5080:80
     volumes:
-      - app:/var/www/html/
+      - public:/var/www/html/
 
 volumes:
-  app:
+  public:
   db:
   storage:
