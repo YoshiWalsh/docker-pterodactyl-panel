@@ -12,8 +12,10 @@ services:
       - db:/var/lib/mysql
   cache:
     image: redis
+    restart: always
   php-fpm:
     image: joshuawalsh/pterodactyl-panel
+    restart: always
     depends_on:
       - database
     volumes:
@@ -28,6 +30,7 @@ services:
       DB_PASSWORD: thisisthepasswordforpterodactyl
   nginx:
     image: joshuawalsh/nginx-for-php-fpm
+    restart: always
     depends_on:
       - php-fpm
     ports:
