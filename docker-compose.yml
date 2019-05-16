@@ -13,10 +13,7 @@ services:
   cache:
     image: redis
   php-fpm:
-    build:
-      context: pterodactyl-panel-app
-      dockerfile: Dockerfile
-      target: app
+    image: joshuawalsh/pterodactyl-panel
     depends_on:
       - database
     volumes:
