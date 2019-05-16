@@ -4,9 +4,9 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: panel
+      MYSQL_USER: pterodactyl
+      MYSQL_PASSWORD: thisisthepasswordforpterodactyl
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     volumes:
       - db:/var/lib/mysql
@@ -20,9 +20,15 @@ services:
     depends_on:
       - database
     volumes:
-      - ./.env:/var/www/html/.env
+      - app:/var/www/html/
       - storage:/var/www/html/storage/
       - public:/var/www/html/public/
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_DATABASE: panel
+      DB_USERNAME: pterodactyl
+      DB_PASSWORD: thisisthepasswordforpterodactyl
   nginx:
     image: joshuawalsh/nginx-for-php-fpm
     depends_on:
@@ -36,3 +42,4 @@ volumes:
   public:
   db:
   storage:
+  app:
