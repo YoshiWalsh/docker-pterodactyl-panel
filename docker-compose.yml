@@ -12,7 +12,7 @@ services:
       - db:/var/lib/mysql
   cache:
     image: redis
-  php:
+  php-fpm:
     build:
       context: pterodactyl-panel-app
       dockerfile: Dockerfile
@@ -24,11 +24,9 @@ services:
       - storage:/var/www/html/storage/
       - public:/var/www/html/public/
   nginx:
-    build:
-      context: nginx
-      dockerfile: Dockerfile
+    image: joshuawalsh/nginx-for-php-fpm
     depends_on:
-      - php
+      - php-fpm
     ports:
       - 5080:80
     volumes:
