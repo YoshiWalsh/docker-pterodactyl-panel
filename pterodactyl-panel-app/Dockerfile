@@ -31,6 +31,7 @@ RUN chmod +x /root/wait-for
 FROM base_php AS app
 WORKDIR /var/www/html/
 COPY --from=install_dependencies --chown=www-data:www-data /var/www/html/ .
+COPY --from=install_dependencies --chown=www-data:www-data /var/www/html/.env.example .env
 COPY --from=install_dependencies /root/wait-for /root/wait-for
 COPY cronfile /root/cronfile
 RUN crontab /root/cronfile
