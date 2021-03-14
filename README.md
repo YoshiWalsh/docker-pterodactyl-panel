@@ -8,14 +8,15 @@ I think it should be compatible with Docker Swarm, but I'm not able to test this
 
 ## Getting started
 
-1. Copy `docker-compose.yml` and `.env` to somewhere on your computer. 
+1. Copy `docker-compose.yml` and `sample.env` to somewhere on your computer. 
 Make sure both files are in the same directory
-2. Edit `.env` to choose a secure username and password for your database.
-3. Run `docker-compose -d`.
-4. Find the name of the php container using `docker ps`. It should be something like `pterodactyl_php-fpm_1`.
-5. Run `docker exec -it pterodactyl_php-fpm_1 php artisan p:user:make` and follow the prompts to set up your first user.
-6. Open the Pterodactyl panel by accessing the URL http://app.pterodactyl.srv in your browser and login in with the username and password created in the previous step
-7. Optional: to access the database use `db.pterodactyl.srv` for the host, `3306` for the port and `panel` for the database/schema name. 
+2. Edit `sample.env` to choose a secure username and password for your database.
+3. Rename `sample.env` to `.env`
+4. Run `docker-compose -d`.
+5. Find the name of the php container using `docker ps`. It should be something like `pterodactyl_php-fpm_1`.
+6. Run `docker exec -it pterodactyl_php-fpm_1 php artisan p:user:make` and follow the prompts to set up your first user.
+7. Open the Pterodactyl panel by accessing the URL http://app.pterodactyl.srv in your browser and login in with the username and password created in the previous step
+8. Optional: to access the database use `db.pterodactyl.srv` for the host, `3306` for the port and `panel` for the database/schema name. 
 
 ## Using your own MySQL/MariaDB server
 
