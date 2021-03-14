@@ -19,6 +19,8 @@ services:
     image: redis
     restart: always
     hostname: "${CACHE_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
+    volumes:
+      - cache_data:/data
     networks:
       network:
         aliases:
@@ -76,6 +78,7 @@ volumes:
   db:
   storage:
   app:
+  cache_data:
 
 networks:
   # This is just to give the network a nice name. The network
