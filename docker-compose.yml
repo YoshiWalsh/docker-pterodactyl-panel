@@ -3,6 +3,7 @@ services:
   database:
     image: mariadb
     restart: always
+    hostname: "${DB_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
     environment:
       MYSQL_DATABASE: panel
       MYSQL_USER: pterodactyl
@@ -12,11 +13,16 @@ services:
       - db:/var/lib/mysql
     networks:
       network:
+        aliases:
+          - "${DB_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
   cache:
     image: redis
     restart: always
+    hostname: "${CACHE_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
     networks:
       network:
+        aliases:
+          - "${CACHE_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
   php-fpm:
     image: joshuawalsh/pterodactyl-panel
     restart: always
@@ -37,15 +43,34 @@ services:
   nginx:
     image: joshuawalsh/nginx-for-php-fpm
     restart: always
+    hostname: "${APP_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"      
     depends_on:
       - php-fpm
-    ports:
-      - 5080:80
+    expose:
+      - 80
     volumes:
       - public:/var/www/html/
     networks:
       network:
-
+        aliases:
+          - "${APP_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
+  # A container with a DNS Proxy Server. Alllows accessing the containers
+  # from the host using fictional domain names instead of their IPs addresses
+  dnsserver:
+    image: defreitas/dns-proxy-server
+    # Defines the domain name used to access the container from the
+    # host using the DNS Proxy Server
+    hostname: "${DNS_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/resolv.conf:/etc/resolv.conf
+    networks:
+      network:
+        aliases:
+          # Defines the domain name used to access the container in the
+          # private docker network
+          - "${DNS_HOSTNAME}.${COMPOSE_PROJECT_NAME}.${DOMAIN_NAME}"
 volumes:
   public:
   db:
