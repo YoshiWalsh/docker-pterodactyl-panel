@@ -3,7 +3,7 @@ ARG pterodactyl_panel_git_branch=v1.11.5
 RUN apk add --no-cache git
 RUN git clone -b $pterodactyl_panel_git_branch --depth 1 https://github.com/pterodactyl/panel.git /git
 
-FROM php:7.2-fpm-alpine AS base_php
+FROM php:8.2-fpm-alpine AS base_php
 RUN apk add --no-cache \
         freetype-dev \
         libjpeg-turbo-dev \
