@@ -9,6 +9,7 @@ RUN apk add --no-cache \
         libjpeg-turbo-dev \
         libpng-dev \
         unzip \
+        libzip-dev \
         git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
