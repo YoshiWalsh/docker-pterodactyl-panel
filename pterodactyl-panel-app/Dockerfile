@@ -1,7 +1,11 @@
-FROM alpine AS git
-ARG pterodactyl_panel_git_branch=v1.11.5
-RUN apk add --no-cache git
-RUN git clone -b $pterodactyl_panel_git_branch --depth 1 https://github.com/pterodactyl/panel.git /git
+FROM alpine AS download
+ARG pterodactyl_panel_version=v1.11.5
+RUN apk add --no-cache \
+        curl \
+        tar
+RUN mkdir -p pterodactyl
+RUN curl -Lo panel.tar.gz https://github.com/pterodactyl/panel/releases/download/${pterodactyl_panel_version}/panel.tar.gz
+RUN tar -xzvf panel.tar.gz -C /pterodactyl
 
 FROM php:8.2-fpm-alpine AS base_php
 RUN apk add --no-cache \
@@ -23,7 +27,7 @@ COPY php-fpm-extra.conf /usr/local/etc/php-fpm.d/extra.conf
 FROM base_php AS install_dependencies
 WORKDIR /var/www/html/
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-COPY --from=git /git/ .
+COPY --from=download /pterodactyl/ .
 RUN composer install --ignore-platform-reqs --no-scripts --no-dev --optimize-autoloader
 RUN chmod -R 755 storage/* bootstrap/cache/
 ADD https://raw.githubusercontent.com/eficode/wait-for/master/wait-for /root/wait-for
