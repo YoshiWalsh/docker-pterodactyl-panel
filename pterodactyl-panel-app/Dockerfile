@@ -1,5 +1,5 @@
 FROM alpine AS git
-ARG pterodactyl_panel_git_branch=v0.7.13
+ARG pterodactyl_panel_git_branch=v1.11.5
 RUN apk add --no-cache git
 RUN git clone -b $pterodactyl_panel_git_branch --depth 1 https://github.com/pterodactyl/panel.git /git
 
