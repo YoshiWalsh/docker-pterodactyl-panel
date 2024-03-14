@@ -28,7 +28,7 @@ FROM base_php AS install_dependencies
 WORKDIR /var/www/html/
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=download /pterodactyl/ .
-RUN composer install --ignore-platform-reqs --no-scripts --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader
 RUN chmod -R 755 storage/* bootstrap/cache/
 ADD https://raw.githubusercontent.com/eficode/wait-for/master/wait-for /root/wait-for
 RUN chmod +x /root/wait-for
