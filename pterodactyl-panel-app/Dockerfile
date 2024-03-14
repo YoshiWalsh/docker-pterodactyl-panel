@@ -29,16 +29,16 @@ WORKDIR /var/www/html/
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=download /pterodactyl/ .
 RUN composer install --no-dev --optimize-autoloader
-RUN chmod -R 755 storage/* bootstrap/cache/
 ADD https://raw.githubusercontent.com/eficode/wait-for/master/wait-for /root/wait-for
 RUN chmod +x /root/wait-for
 
 FROM base_php AS app
 WORKDIR /var/www/html/
-COPY --from=install_dependencies --chown=www-data:www-data /var/www/html/ .
-COPY --from=install_dependencies --chown=www-data:www-data /var/www/html/.env.example .env
+COPY --from=install_dependencies --chown=www-data:www-data /var/www/html/ /var/www/pterodactyl/
+COPY --from=install_dependencies --chown=www-data:www-data /var/www/html/.env.example /var/www/pterodactyl/.env
 COPY --from=install_dependencies /root/wait-for /root/wait-for
 COPY cronfile /root/cronfile
 RUN crontab /root/cronfile
+RUN chmod -R 755 /var/www/pterodactyl/storage/* /var/www/pterodactyl/bootstrap/cache/
 EXPOSE 80
-ENTRYPOINT ["/bin/sh", "-c", "/root/wait-for database:3306 -t 30 && yes no | php artisan key:generate && php artisan migrate --force && php artisan db:seed --force && crond && php-fpm"]
+ENTRYPOINT ["/bin/sh", "-c", "/root/wait-for database:3306 -t 30 && cp -fp /var/www/html/.env /var/www/pterodactyl/ || : && cp -rfpT /var/www/pterodactyl /var/www/html && yes no | php artisan key:generate && php artisan migrate --force && php artisan db:seed --force && crond && chown -R www-data:www-data * && php-fpm"]
