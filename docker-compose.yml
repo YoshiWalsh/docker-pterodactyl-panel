@@ -29,7 +29,7 @@ services:
       DB_USERNAME: pterodactyl
       DB_PASSWORD: thisisthepasswordforpterodactyl
   nginx:
-    image: joshuawalsh/nginx-for-php-fpm
+    image: yoshiwalsh/nginx-for-php-fpm
     restart: always
     depends_on:
       - php-fpm
