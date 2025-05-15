@@ -14,7 +14,7 @@ services:
     image: redis
     restart: always
   php-fpm:
-    image: yoshiwalsh/pterodactyl-panel:v1.11.5
+    image: yoshiwalsh/pterodactyl-panel:v1.11.10
     restart: always
     depends_on:
       - database
